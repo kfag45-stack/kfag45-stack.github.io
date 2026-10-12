@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dynasty League Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#e8edf2; --panel:#ffffff; --ink:#14213d; --muted:#5b6780; --line:#d3dae4;
+  --accent:#2f5bea; --gold:#d99a0b; --good:#1c8a5a; --bad:#c23b3b;
+  --display:'Barlow Condensed','Arial Narrow',Impact,sans-serif;
+  --body:'Barlow',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0f1626; --panel:#18233b; --ink:#e8edf7; --muted:#93a0bb; --line:#2a3858; --accent:#6f93ff; --gold:#f0b429}
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--body);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.app{display:grid;grid-template-columns:230px 1fr;min-height:100%}
+aside{background:var(--ink);color:#e8edf7;padding:24px 18px;position:sticky;top:0;align-self:start;height:100vh}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.logo{width:42px;height:42px;border-radius:10px;background:var(--gold);color:#14213d;display:grid;place-items:center;font:800 22px var(--display)}
+.brand b{font:700 22px/1 var(--display);letter-spacing:.02em;display:block}
+.brand span{font-size:13px;color:#a9b5cf}
+nav{display:flex;flex-direction:column;gap:4px}
+nav .group{font-size:13px;color:#8e9bb8;margin:14px 10px 4px}
+nav a{color:#e8edf7;text-decoration:none;padding:9px 12px;border-radius:8px;font-weight:500}
+nav a:hover{background:rgba(255,255,255,.08)}
+nav a.on{background:var(--accent);color:#fff}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+main{padding:32px clamp(16px,4vw,48px);max-width:980px;width:100%}
+h1{font:800 clamp(38px,6vw,64px)/.95 var(--display);margin:0 0 6px;letter-spacing:.01em}
+h2{font:700 26px/1.1 var(--display);margin:28px 0 12px}
+.sub{color:var(--muted);margin:0 0 24px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:520px}
+th,td{padding:11px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:13px;color:var(--muted);font-weight:600}
+th:nth-child(2),td:nth-child(2){text-align:left;width:100%}
+table{min-width:640px}
+td:first-child,th:first-child{text-align:center;width:44px;font:700 20px var(--display)}
+tr:last-child td{border-bottom:0}
+tr.cut td{border-bottom:2px solid var(--gold)}
+.team{display:flex;align-items:center;gap:10px;font-weight:600}
+.av{width:30px;height:30px;border-radius:50%;background:var(--line);object-fit:cover;flex:none}
+.bar{height:4px;background:var(--line);border-radius:2px;margin-top:5px;min-width:90px}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:2px}
+.trade{margin-bottom:14px}
+.trade .sides{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:10px}
+.trade h3{margin:0 0 4px;font:700 20px var(--display)}
+.trade ul{margin:0;padding-left:18px;color:var(--muted)}
+.trade .meta{font-size:14px;color:var(--muted)}
+.champ{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.champ:last-child{border-bottom:0}
+.yr{font:800 34px var(--display);width:76px;color:var(--accent)}
+.hot{background:var(--ink);color:#fff;border-radius:14px;padding:26px}
+.hot .big{font:800 clamp(44px,8vw,84px)/.95 var(--display);color:var(--gold)}
+.hot p{margin:6px 0 0;color:#c4cde0}
+.pos{color:var(--good)} .neg{color:var(--bad)}
+.setup{max-width:480px}
+.setup input{width:100%;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit;margin:10px 0}
+button{background:var(--accent);color:#fff;border:0;border-radius:8px;padding:11px 18px;font:600 16px var(--body);cursor:pointer}
+button.ghost{background:transparent;color:var(--muted);padding:6px 0;text-decoration:underline;font-size:14px}
+.err{color:var(--bad)}
+footer{margin-top:40px;color:var(--muted);font-size:14px}
+@media (max-width:760px){
+  .app{grid-template-columns:1fr}
+  aside{position:static;height:auto;padding:14px}
+  .brand{margin-bottom:12px}
+  nav{flex-direction:row;flex-wrap:wrap}
+  nav .group{display:none}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand"><div class="logo">DL</div><div><b id="brandName">Dynasty League</b><span>Powered by Sleeper</span></div></div>
+    <nav id="nav">
+      <span class="group">Main</span>
+      <a href="#home" data-p="home">Home</a>
+      <a href="#standings" data-p="standings">Standings</a>
+      <a href="#trades" data-p="trades">Trades</a>
+      <a href="#history" data-p="history">History</a>
+      <a href="#hottest" data-p="hottest">Hottest Team</a>
+    </nav>
+  </aside>
+  <main id="view"><p class="sub">Loading league data…</p></main>
+</div>
+
+<script>
+/* ---- Setup: put your Sleeper league ID here, or leave blank to be asked in the browser ---- */
+const LEAGUE_ID = "1312803373661028352";
+
+const API = "https://api.sleeper.app/v1";
+const $ = s => document.querySelector(s);
+const view = $("#view");
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const get = u => fetch(API + u).then(r => { if (!r.ok) throw new Error("Sleeper returned " + r.status); return r.json(); });
+const store = { get: k => { try { return localStorage.getItem(k) } catch { return null } },
+                set: (k, v) => { try { localStorage.setItem(k, v) } catch {} },
+                del: k => { try { localStorage.removeItem(k) } catch {} } };
+
+let id = LEAGUE_ID || new URLSearchParams(location.search).get("league") || store.get("leagueId") || "";
+let D = null;            // league data
+let cache = {};          // per-page cache
+
+function teamsFor(rosters, users) {
+  const u = Object.fromEntries(users.map(x => [x.user_id, x]));
+  const map = {};
+  rosters.forEach(r => {
+    const o = u[r.owner_id] || {};
+    map[r.roster_id] = { id: r.roster_id, name: (o.metadata && o.metadata.team_name) || o.display_name || "Team " + r.roster_id,
+      owner: o.display_name || "", avatar: o.avatar ? "https://sleepercdn.com/avatars/thumbs/" + o.avatar : "", s: r.settings || {}, m: r.metadata || {} };
+  });
+  return map;
+}
+const pf = t => (t.s.fpts || 0) + (t.s.fpts_decimal || 0) / 100;
+const pa = t => (t.s.fpts_against || 0) + (t.s.fpts_against_decimal || 0) / 100;
+const av = t => t.avatar ? `<img class="av" src="${esc(t.avatar)}" alt="">` : `<span class="av"></span>`;
+const fmt = n => n.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const ranked = () => Object.values(D.teams).sort((a, b) => (b.s.wins || 0) - (a.s.wins || 0) || pf(b) - pf(a));
+
+async function load() {
+  const [league, rosters, users, state] = await Promise.all([
+    get("/league/" + id), get(`/league/${id}/rosters`), get(`/league/${id}/users`), get("/state/nfl")]);
+  D = { league, teams: teamsFor(rosters, users), state };
+  $("#brandName").textContent = league.name;
+  document.title = league.name;
+}
+
+function setup(msg) {
+  view.innerHTML = `<div class="card setup"><h1>Connect</h1>
+    <p class="sub">Paste your Sleeper league ID. You can find it in the URL of your league on sleeper.com.</p>
+    ${msg ? `<p class="err">${esc(msg)}</p>` : ""}
+    <label for="lid">League ID</label>
+    <input id="lid" inputmode="numeric" placeholder="e.g. 123456789012345678">
+    <button id="go">Load league</button></div>`;
+  $("#go").onclick = () => { const v = $("#lid").value.trim(); if (v) { id = v; store.set("leagueId", v); boot(); } };
+}
+
+function stTable(list, startAt = 0) {
+  const po = D.league.settings.playoff_teams || 0, max = Math.max(...Object.values(D.teams).map(pf), 1);
+  const row = (t, i) => {
+    const w = t.s.wins || 0, l = t.s.losses || 0, ti = t.s.ties || 0, g = w + l + ti, d = pf(t) - pa(t);
+    const cut = po && startAt === 0 && i === po - 1 ? ' class="cut"' : "";
+    return `<tr${cut}><td>${i + 1}</td><td><div class="team">${av(t)}<div>${esc(t.name)}<div class="bar"><i style="width:${(pf(t) / max * 100).toFixed(0)}%"></i></div></div></div></td>
+    <td>${w}-${l}${ti ? "-" + ti : ""}</td><td>${g ? (w / g).toFixed(3).replace(/^0/, "") : "—"}</td><td>${fmt(pf(t))}</td><td>${fmt(pa(t))}</td>
+    <td class="${d >= 0 ? "pos" : "neg"}">${d >= 0 ? "+" : ""}${fmt(d)}</td><td>${esc(t.m.streak || "—")}</td></tr>`;
+  };
+  return `<div class="card scroll"><table><thead><tr><th>#</th><th>Team</th><th>Record</th><th>Win %</th><th>PF</th><th>PA</th><th>Diff</th><th>Streak</th></tr></thead><tbody>${list.map(row).join("")}</tbody></table></div>`;
+}
+
+/* ---- Pages ---- */
+const pages = {
+  home() {
+    const t = ranked().slice(0, 3);
+    return `<h1>${esc(D.league.name)}</h1>
+    <p class="sub">${esc(D.league.season)} season · ${Object.keys(D.teams).length} teams</p>
+    <h2>Top of the table</h2>
+    <div class="grid">${t.map((x, i) => `<div class="card"><div class="team">${av(x)}${esc(x.name)}</div>
+      <p class="sub" style="margin:8px 0 0">#${i + 1} · ${x.s.wins || 0}-${x.s.losses || 0}${x.s.ties ? "-" + x.s.ties : ""} · ${fmt(pf(x))} PF</p></div>`).join("")}</div>
+    <h2>Full standings</h2>${stTable(ranked())}
+    <footer>Data from Sleeper. <button class="ghost" id="chg">Switch league</button></footer>`;
+  },
+  standings() {
+    const r = ranked(), po = D.league.settings.playoff_teams || 0;
+    const nd = D.league.settings.divisions || 0;
+    let divs = "";
+    if (nd > 1) {
+      for (let n = 1; n <= nd; n++) {
+        const members = r.filter(t => t.s.division === n);
+        if (members.length) divs += `<h2>${esc((D.league.metadata && D.league.metadata["division_" + n]) || "Division " + n)}</h2>${stTable(members, 1)}`;
+      }
+    }
+    return `<h1>Standings</h1><p class="sub">All ${r.length} teams, sorted by wins, then points scored.${po ? ` The line marks the top ${po} playoff spots.` : ""}</p>
+    ${stTable(r)}${divs}`;
+  },
+  async trades() {
+    if (!cache.trades) {
+      const rounds = Array.from({ length: 18 }, (_, i) => i + 1);
+      const res = await Promise.allSettled(rounds.map(w => get(`/league/${id}/transactions/${w}`)));
+      const all = res.flatMap(r => r.status === "fulfilled" ? r.value : []).filter(x => x.type === "trade" && x.status === "complete");
+      all.sort((a, b) => b.created - a.created);
+      if (all.length && !cache.players) cache.players = await get("/players/nfl").catch(() => ({}));
+      cache.trades = all;
+    }
+    const P = cache.players || {}, T = D.teams;
+    const name = pid => { const p = P[pid]; return p ? `${p.first_name} ${p.last_name} (${p.position || "?"})` : "Player " + pid; };
+    const list = cache.trades.slice(0, 40).map(tr => {
+      const sides = tr.roster_ids.map(rid => {
+        const got = Object.entries(tr.adds || {}).filter(([, r]) => r === rid).map(([p]) => name(p));
+        const picks = (tr.draft_picks || []).filter(p => p.owner_id === rid).map(p => `${p.season} round ${p.round} pick`);
+        const items = [...got, ...picks];
+        return `<div><h3>${esc(T[rid]?.name || "Team " + rid)} receive${""}</h3><ul>${items.map(i => `<li>${esc(i)}</li>`).join("") || "<li>Nothing listed</li>"}</ul></div>`;
+      }).join("");
+      return `<div class="card trade"><div class="meta">${new Date(tr.created).toLocaleDateString(undefined, { dateStyle: "medium" })}</div><div class="sides">${sides}</div></div>`;
+    }).join("");
+    return `<h1>Trades</h1><p class="sub">${cache.trades.length ? "Most recent completed trades this season." : "No completed trades this season yet."}</p>${list}`;
+  },
+  async history() {
+    if (!cache.history) {
+      const out = []; let lid = id;
+      for (let i = 0; i < 12 && lid && lid !== "0"; i++) {
+        const [lg, rs, us, br] = await Promise.all([get("/league/" + lid), get(`/league/${lid}/rosters`), get(`/league/${lid}/users`), get(`/league/${lid}/winners_bracket`).catch(() => [])]);
+        const final = (br || []).find(m => m.p === 1), tm = teamsFor(rs, us);
+        out.push({ season: lg.season, champ: final && final.w ? tm[final.w] : null, status: lg.status });
+        lid = lg.previous_league_id;
+      }
+      cache.history = out;
+    }
+    return `<h1>History</h1><p class="sub">League champions, season by season.</p><div class="card">
+    ${cache.history.map(h => `<div class="champ"><div class="yr">${esc(h.season)}</div>
+      ${h.champ ? `${av(h.champ)}<div><b>${esc(h.champ.name)}</b><div class="sub" style="margin:0">${esc(h.champ.owner)}</div></div>` : `<span class="sub" style="margin:0">${h.status === "complete" ? "No champion recorded" : "Season in progress"}</span>`}</div>`).join("")}</div>`;
+  },
+  async hottest() {
+    if (!cache.hot) {
+      const last = Math.min(D.league.settings.last_scored_leg || 0, 18);
+      const from = Math.max(1, last - 2), weeks = [];
+      for (let w = from; w <= last; w++) weeks.push(w);
+      const res = await Promise.all(weeks.map(w => get(`/league/${id}/matchups/${w}`).catch(() => [])));
+      const tot = {};
+      res.forEach(ms => ms.forEach(m => { if (m.points) (tot[m.roster_id] ||= []).push(m.points); }));
+      cache.hot = { weeks: weeks.length, rows: Object.entries(tot).map(([rid, p]) => ({ t: D.teams[rid], avg: p.reduce((a, b) => a + b, 0) / p.length })).filter(r => r.t).sort((a, b) => b.avg - a.avg) };
+    }
+    const { rows, weeks } = cache.hot;
+    if (!rows.length) return `<h1>Hottest Team</h1><p class="sub">No games have been scored yet. Check back once the season starts.</p>`;
+    const top = rows[0];
+    return `<h1>Hottest Team</h1><p class="sub">Average points over the last ${weeks} scored week${weeks > 1 ? "s" : ""}.</p>
+    <div class="hot"><div class="big">${esc(top.t.name)}</div><p>${fmt(top.avg)} points per week</p></div>
+    <h2>Recent form</h2><div class="card scroll"><table><thead><tr><th>#</th><th>Team</th><th>Avg</th></tr></thead><tbody>
+    ${rows.map((r, i) => `<tr><td>${i + 1}</td><td><div class="team">${av(r.t)}${esc(r.t.name)}</div></td><td>${fmt(r.avg)}</td></tr>`).join("")}</tbody></table></div>`;
+  }
+};
+
+async function route() {
+  if (!D) return;
+  const p = (location.hash || "#home").slice(1);
+  const page = pages[p] ? p : "home";
+  document.querySelectorAll("#nav a").forEach(a => a.classList.toggle("on", a.dataset.p === page));
+  view.innerHTML = `<p class="sub">Loading…</p>`;
+  try {
+    view.innerHTML = await pages[page]();
+    const c = $("#chg"); if (c) c.onclick = () => { store.del("leagueId"); id = ""; cache = {}; D = null; setup(); };
+  } catch (e) { view.innerHTML = `<p class="err">Couldn't load this page: ${esc(e.message)}. Refresh to try again.</p>`; }
+}
+
+async function boot() {
+  if (!id) return setup();
+  view.innerHTML = `<p class="sub">Loading league data…</p>`;
+  try { await load(); route(); }
+  catch (e) { id = ""; store.del("leagueId"); setup("Couldn't find that league. Check the ID and try again."); }
+}
+window.addEventListener("hashchange", route);
+boot();
+</script>
+</body>
+</html>
